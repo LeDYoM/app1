@@ -15,6 +15,10 @@ public:
     inline void setProjectionMatrixPointer(const QMatrix4x4 &pMatrix) { program->setUniformValue("uPMatrix", pMatrix); }
     inline GLShaderProgram *Program() { return program; }
 
+    virtual bool storeAttributeIndices();
+    bool setActive();
+
+    inline int vertexLocation() const { return vertexLocation_; }
 private:
     Shader();
 
@@ -22,6 +26,7 @@ private:
     static Shader *fromSource(const String &vShaderFile,const String &fShaderFile);
 
     QGLShaderProgram *program;
+    int vertexLocation_;
 };
 
 #endif // SHADER_H

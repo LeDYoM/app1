@@ -4,6 +4,7 @@
 #include <QDebug>
 
 #define DEBUG(text) qDebug() << text;
+#define DEBUG_INFO(text) qDebug << text;
 #define DEBUG_IF(condition,text) if (condition) { DEBUG(text) }
 
 #endif // LOG_H

@@ -118,6 +118,7 @@ void Renderer::RenderShader(Shader *shader)
     // Offset for position
 //    quintptr offset = 0;
 
+    shader->setActive();
     // Set modelview-projection matrix
     shader->setMVMatrixPointer(modelView);
     shader->setProjectionMatrixPointer(projection);
@@ -126,9 +127,9 @@ void Renderer::RenderShader(Shader *shader)
     //program.setUniformValue("texture", 0);
 
     // Tell OpenGL programmable pipeline how to locate vertex position data
-    int vertexLocation = shader->Program()->attributeLocation("aVertexPosition");
-    shader->Program()->enableAttributeArray(vertexLocation);
-    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), 0);
+//    int vertexLocation = shader->Program()->attributeLocation("aVertexPosition");
+//    shader->Program()->enableAttributeArray(vertexLocation);
+    glVertexAttribPointer(shader->vertexLocation(), 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), 0);
 
     // Offset for texture coordinate
 //    offset += sizeof(QVector3D);
