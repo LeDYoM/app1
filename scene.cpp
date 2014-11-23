@@ -8,13 +8,8 @@ Scene::Scene(SceneManager *scnManager_)
 {
 }
 
-int Scene::RenderScene(Renderer *renderer)
-{
-    camera->Render(renderer);
-    return 0;
-}
-
 void Scene::Render(Renderer *renderer)
 {
+    camera->Render(renderer);
 }
 

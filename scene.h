@@ -15,7 +15,6 @@ public:
     explicit Scene(SceneManager *scnManager_);
     void resizeGL(int w, int h);
     void Render(Renderer *renderer);
-    int RenderScene(Renderer *renderer);
 
 public:
     template <typename T> T* createCamera()

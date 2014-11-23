@@ -16,6 +16,6 @@ void SceneManager::Render(Renderer *renderer)
 
     if (activeScene)
     {
-        activeScene->RenderScene(renderer);
+        activeScene->Render(renderer);
     }
 }
