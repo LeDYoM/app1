@@ -13,3 +13,23 @@ void Scene::Render(Renderer *renderer)
     camera->Render(renderer);
 }
 
+void Scene::mousePressEvent(QMouseEvent *e)
+{
+
+}
+
+void Scene::mouseReleaseEvent(QMouseEvent *e)
+{
+
+}
+
+void Scene::timerEvent(QTimerEvent *e)
+{
+
+}
+
+void Scene::resize(int w, int h)
+{
+
+}
+

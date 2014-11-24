@@ -28,6 +28,7 @@ void GLWRenderer::mousePressEvent(QMouseEvent *e)
 {
     // Save mouse press position
     mousePressPosition = QVector2D(e->localPos());
+    scnManager->mousePressEvent(e);
 }
 
 void GLWRenderer::mouseReleaseEvent(QMouseEvent *e)
@@ -47,13 +48,16 @@ void GLWRenderer::mouseReleaseEvent(QMouseEvent *e)
 
     // Increase angular speed
     angularSpeed += acc;
+
+    scnManager->mouseReleaseEvent(e);
+
 }
 
 static MeshObject *cubeObject;
 static Scene *scene;
 static Camera *camera;
 
-void GLWRenderer::timerEvent(QTimerEvent *)
+void GLWRenderer::timerEvent(QTimerEvent *e)
 {
     // Decrease angular speed (friction)
     angularSpeed *= 0.99;
@@ -68,6 +72,8 @@ void GLWRenderer::timerEvent(QTimerEvent *)
     }
     // Update scene
 //    updateGL();
+
+    scnManager->timerEvent(e);
 
 }
 

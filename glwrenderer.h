@@ -22,11 +22,11 @@ public:
     explicit GLWRenderer(QGLFormat &format, QWidget *parent = 0);
     virtual ~GLWRenderer();
 
-protected:
     void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
     void timerEvent(QTimerEvent *e);
 
+protected:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();

@@ -19,3 +19,23 @@ void SceneManager::Render(Renderer *renderer)
         activeScene->Render(renderer);
     }
 }
+
+void SceneManager::mousePressEvent(QMouseEvent *e)
+{
+
+}
+
+void SceneManager::mouseReleaseEvent(QMouseEvent *e)
+{
+
+}
+
+void SceneManager::timerEvent(QTimerEvent *e)
+{
+
+}
+
+void SceneManager::resize(int w, int h)
+{
+
+}

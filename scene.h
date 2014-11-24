@@ -23,6 +23,13 @@ public:
         camera = temp;
         return temp;
     }
+
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void timerEvent(QTimerEvent *e);
+    void resize(int w, int h);
+
+
 private:
     Camera *camera;
 };

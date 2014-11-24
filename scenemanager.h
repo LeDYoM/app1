@@ -27,6 +27,13 @@ public:
     }
 
     void Render(Renderer *renderer);
+
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void timerEvent(QTimerEvent *e);
+    void resize(int w, int h);
+
+
 };
 
 #endif // SCENEMANAGER_H
