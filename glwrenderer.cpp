@@ -128,6 +128,8 @@ void GLWRenderer::resizeGL(int w, int h)
 
     qreal aspect = qreal(w) / qreal(h ? h : 1);
     camera->setRatio(aspect);
+
+    scnManager->resize(w,h);
 }
 
 void GLWRenderer::paintGL()
