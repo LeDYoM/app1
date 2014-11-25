@@ -14,13 +14,7 @@ void SceneManager::Render(Renderer *renderer)
 {
     renderer->prepareNewFrame();
 
-    DEBUG_IF(!activeScene,"No active scene")
     DO_IF_ACTIVE_SCENE(activeScene->Render(renderer);)
-
-    if (activeScene)
-    {
-        activeScene->Render(renderer);
-    }
 }
 
 void SceneManager::mousePressEvent(QMouseEvent *e)

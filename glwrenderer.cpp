@@ -27,12 +27,13 @@ GLWRenderer::~GLWRenderer()
 void GLWRenderer::mousePressEvent(QMouseEvent *e)
 {
     // Save mouse press position
-    mousePressPosition = QVector2D(e->localPos());
+//    mousePressPosition = QVector2D(e->localPos());
     scnManager->mousePressEvent(e);
 }
 
 void GLWRenderer::mouseReleaseEvent(QMouseEvent *e)
 {
+/*
     // Mouse release position - mouse press position
     QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
 
@@ -48,17 +49,19 @@ void GLWRenderer::mouseReleaseEvent(QMouseEvent *e)
 
     // Increase angular speed
     angularSpeed += acc;
-
+*/
     scnManager->mouseReleaseEvent(e);
 
 }
 
-static MeshObject *cubeObject;
+
+//static MeshObject *cubeObject;
 static Scene *scene;
-static Camera *camera;
+//static Camera *camera;
 
 void GLWRenderer::timerEvent(QTimerEvent *e)
 {
+    /*
     // Decrease angular speed (friction)
     angularSpeed *= 0.99;
 
@@ -72,7 +75,7 @@ void GLWRenderer::timerEvent(QTimerEvent *e)
     }
     // Update scene
 //    updateGL();
-
+*/
     scnManager->timerEvent(e);
 
 }
@@ -86,18 +89,14 @@ void GLWRenderer::initializeGL()
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
 
-    scnManager = new SceneManager(renderer);
+//    scnManager = new SceneManager(renderer);
     scene = scnManager->createScene<Scene>();
-    camera = scene->createCamera<Camera>();
-    camera->setZNear(3.0);
-    camera->setZFar(7.0);
-    camera->setAngle(45.0);
 
-    cubeObject = camera->create<MeshObject>();
-    cubeObject->setMBuffer(MeshBuffer::createCubeGeometry(QVector3D(1.0f,1.0f,1.0f)));
-//    cubeObject->setMBuffer(new MeshBuffer(geometryCreator->createCubeGeometry(QVector3D(2,2,2)),Shader::defaultShader()));
-    cubeObject->setPosition(Vector3D(0.0f,0.0f, -5.0f));
+//    cubeObject = camera->create<MeshObject>();
+//    cubeObject->setMBuffer(MeshBuffer::createCubeGeometry(QVector3D(1.0f,1.0f,1.0f)));
+//    cubeObject->setPosition(Vector3D(0.0f,0.0f, -5.0f));
 
+    scene->onCreate();
     scnManager->set_activeScene(scene);
 }
 
@@ -125,9 +124,6 @@ void GLWRenderer::initTextures()
 void GLWRenderer::resizeGL(int w, int h)
 {
     renderer->setSize(w,h);
-
-    qreal aspect = qreal(w) / qreal(h ? h : 1);
-    camera->setRatio(aspect);
 
     scnManager->resize(w,h);
 }

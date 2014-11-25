@@ -32,8 +32,6 @@ void Camera::Render(Renderer *renderer)
 
 void Camera::resizeGL(int w, int h)
 {
-    // Set OpenGL viewport to cover whole widget
-    glViewport(0, 0, w, h);
-
-
+    qreal aspect = qreal(w) / qreal(h ? h : 1);
+    setRatio(aspect);
 }

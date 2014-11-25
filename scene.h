@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "sceneobject.h"
+#include <QBasicTimer>
 
 class SceneManager;
 class Camera;
@@ -28,10 +29,20 @@ public:
     void mouseReleaseEvent(QMouseEvent *e);
     void timerEvent(QTimerEvent *e);
     void resize(int w, int h);
-
+    void onCreate();
 
 private:
     Camera *camera;
+
+    //QBasicTimer timer;
+
+//    GLuint texture;
+
+    QVector2D mousePressPosition;
+    QVector3D rotationAxis;
+    qreal angularSpeed;
+    QQuaternion rotation;
+
 };
 
 #endif // SCENE_H

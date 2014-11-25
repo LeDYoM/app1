@@ -3,7 +3,7 @@
 #include "meshbuffer.h"
 #include "vdata.h"
 #include "scenemanager.h"
-#include <QOpenGLBuffer>
+#include "log.h"
 
 Renderer *Renderer::instance=0;
 
@@ -88,6 +88,7 @@ QGLShaderProgram *Renderer::newShaderProgram()
 
 void Renderer::Clear()
 {
+    rcontext->makeCurrent();
     // Clear color and depth buffer
     glClearColor(1.0,.0,1.0,1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -118,7 +119,7 @@ void Renderer::RenderShader(Shader *shader)
     // Offset for position
 //    quintptr offset = 0;
 
-    shader->setActive();
+    //shader->setActive();
     // Set modelview-projection matrix
     shader->setMVMatrixPointer(modelView);
     shader->setProjectionMatrixPointer(projection);
