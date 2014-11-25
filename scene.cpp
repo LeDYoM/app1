@@ -4,7 +4,7 @@
 #include "scenemanager.h"
 
 Scene::Scene(SceneManager *scnManager_)
-    :QObject(scnManager_)
+    :QObject(scnManager_),camera(0)
 {
 }
 

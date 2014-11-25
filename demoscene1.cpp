@@ -52,12 +52,12 @@ void DemoScene1::timerEvent(QTimerEvent *e)
 
 void DemoScene1::onCreate()
 {
-    camera = createCamera<Camera>();
-    camera->setZNear(3.0);
-    camera->setZFar(7.0);
-    camera->setAngle(45.0);
+    createCamera<Camera>();
+    getCamera()->setZNear(3.0);
+    getCamera()->setZFar(7.0);
+    getCamera()->setAngle(45.0);
 
-    cubeObject = camera->create<MeshObject>();
+    cubeObject = getCamera()->create<MeshObject>();
     cubeObject->setMBuffer(MeshBuffer::createCubeGeometry(QVector3D(1.0f,1.0f,1.0f)));
 //    cubeObject->setMBuffer(new MeshBuffer(geometryCreator->createCubeGeometry(QVector3D(2,2,2)),Shader::defaultShader()));
     cubeObject->setPosition(Vector3D(0.0f,0.0f, -5.0f));
