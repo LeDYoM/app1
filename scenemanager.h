@@ -21,7 +21,7 @@ public:
 public:
     template <typename T> T *createScene()
     {
-        Scene *scn = new T(this);
+        T *scn = new T(this);
         _children.push_back(scn);
         return scn;
     }

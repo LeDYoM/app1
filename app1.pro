@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     meshobject.cpp \
     scenemanager.cpp \
     renderer.cpp \
-    shader.cpp
+    shader.cpp \
+    demoscene1.cpp
 
 HEADERS  += mainwindow.h \
     glwrenderer.h \
@@ -34,7 +35,8 @@ HEADERS  += mainwindow.h \
     shader.h \
     properties.h \
     childrencontainer.h \
-    log.h
+    log.h \
+    demoscene1.h
 
 RESOURCES = shaders.qrc
 

@@ -25,11 +25,11 @@ public:
         return temp;
     }
 
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void timerEvent(QTimerEvent *e);
-    void resize(int w, int h);
-    void onCreate();
+    virtual void mousePressEvent(QMouseEvent *e);
+    virtual void mouseReleaseEvent(QMouseEvent *e);
+    virtual void timerEvent(QTimerEvent *e);
+    virtual void resize(int w, int h);
+    virtual void onCreate();
 
 private:
     Camera *camera;

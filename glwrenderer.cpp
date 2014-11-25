@@ -6,7 +6,7 @@
 #include "vdata.h"
 #include "camera.h"
 #include "meshbuffer.h"
-#include "scene.h"
+#include "demoscene1.h"
 #include "scenemanager.h"
 #include <QGLContext>
 #include "renderer.h"
@@ -35,7 +35,7 @@ void GLWRenderer::mouseReleaseEvent(QMouseEvent *e)
 }
 
 
-static Scene *scene;
+static DemoScene1 *scene;
 
 void GLWRenderer::timerEvent(QTimerEvent *e)
 {
@@ -49,7 +49,7 @@ void GLWRenderer::initializeGL()
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
 
-    scene = scnManager->createScene<Scene>();
+    scene = scnManager->createScene<DemoScene1>();
     scene->onCreate();
     scnManager->set_activeScene(scene);
 }
