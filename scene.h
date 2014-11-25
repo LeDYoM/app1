@@ -31,18 +31,8 @@ public:
     virtual void resize(int w, int h);
     virtual void onCreate();
 
-private:
+protected:
     Camera *camera;
-
-    //QBasicTimer timer;
-
-//    GLuint texture;
-
-    QVector2D mousePressPosition;
-    QVector3D rotationAxis;
-    qreal angularSpeed;
-    QQuaternion rotation;
-
 };
 
 #endif // SCENE_H
