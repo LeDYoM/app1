@@ -13,7 +13,7 @@
 #include "log.h"
 
 GLWRenderer::GLWRenderer(QGLFormat &format, QWidget *parent) :
-    QGLWidget(format,parent), angularSpeed(0)
+    QGLWidget(format,parent)
 {
     renderer = Renderer::create(context(),this);
     scnManager = new SceneManager(this);
@@ -26,76 +26,30 @@ GLWRenderer::~GLWRenderer()
 
 void GLWRenderer::mousePressEvent(QMouseEvent *e)
 {
-    // Save mouse press position
-//    mousePressPosition = QVector2D(e->localPos());
     scnManager->mousePressEvent(e);
 }
 
 void GLWRenderer::mouseReleaseEvent(QMouseEvent *e)
 {
-/*
-    // Mouse release position - mouse press position
-    QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
-
-    // Rotation axis is perpendicular to the mouse position difference
-    // vector
-    QVector3D n = QVector3D(diff.y(), diff.x(), 0.0).normalized();
-
-    // Accelerate angular speed relative to the length of the mouse sweep
-    qreal acc = diff.length() / 100.0;
-
-    // Calculate new rotation axis as weighted sum
-    rotationAxis = (rotationAxis * angularSpeed + n * acc).normalized();
-
-    // Increase angular speed
-    angularSpeed += acc;
-*/
     scnManager->mouseReleaseEvent(e);
-
 }
 
 
-//static MeshObject *cubeObject;
 static Scene *scene;
-//static Camera *camera;
 
 void GLWRenderer::timerEvent(QTimerEvent *e)
 {
-    /*
-    // Decrease angular speed (friction)
-    angularSpeed *= 0.99;
-
-    // Stop rotation when speed goes below threshold
-    if (angularSpeed < 0.01) {
-        angularSpeed = 0.0;
-    } else {
-        // Update rotation
-        rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
-        cubeObject->setRotation(rotation);
-    }
-    // Update scene
-//    updateGL();
-*/
     scnManager->timerEvent(e);
-
 }
 
 void GLWRenderer::initializeGL()
 {
     renderer->initialize();
 
-//    initTextures();
-
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
 
-//    scnManager = new SceneManager(renderer);
     scene = scnManager->createScene<Scene>();
-
-//    cubeObject = camera->create<MeshObject>();
-//    cubeObject->setMBuffer(MeshBuffer::createCubeGeometry(QVector3D(1.0f,1.0f,1.0f)));
-//    cubeObject->setPosition(Vector3D(0.0f,0.0f, -5.0f));
-
     scene->onCreate();
     scnManager->set_activeScene(scene);
 }
@@ -124,7 +78,6 @@ void GLWRenderer::initTextures()
 void GLWRenderer::resizeGL(int w, int h)
 {
     renderer->setSize(w,h);
-
     scnManager->resize(w,h);
 }
 
