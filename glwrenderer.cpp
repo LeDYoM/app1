@@ -24,23 +24,25 @@ GLWRenderer::~GLWRenderer()
     //    deleteTexture(texture);
 }
 
-void GLWRenderer::mousePressEvent(QMouseEvent *e)
+bool GLWRenderer::event(QEvent *e)
 {
-    scnManager->mousePressEvent(e);
-}
+    if (e->type() == QEvent::MouseButtonPress)
+    {
+        scnManager->mousePressEvent(static_cast<QMouseEvent*>(e));
+    }
+    else if (e->type() == QEvent::MouseButtonRelease)
+    {
+        scnManager->mouseReleaseEvent(static_cast<QMouseEvent*>(e));
+    }
+    else if (e->type() == QEvent::Timer)
+    {
+        scnManager->timerEvent(static_cast<QTimerEvent*>(e));
+    }
 
-void GLWRenderer::mouseReleaseEvent(QMouseEvent *e)
-{
-    scnManager->mouseReleaseEvent(e);
+    return QGLWidget::event(e);
 }
-
 
 static DemoScene1 *scene;
-
-void GLWRenderer::timerEvent(QTimerEvent *e)
-{
-    scnManager->timerEvent(e);
-}
 
 void GLWRenderer::initializeGL()
 {

@@ -22,9 +22,7 @@ public:
     explicit GLWRenderer(QGLFormat &format, QWidget *parent = 0);
     virtual ~GLWRenderer();
 
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void timerEvent(QTimerEvent *e);
+    bool event(QEvent *);
 
 protected:
     void initializeGL();
