@@ -2,6 +2,7 @@
 #include "renderer.h"
 #include "scene.h"
 #include "log.h"
+#include <QMouseEvent>
 
 #define DO_IF_ACTIVE_SCENE(action)  if (activeScene) { action } else { DEBUG("No active scene"); }
 
@@ -17,19 +18,22 @@ void SceneManager::Render(Renderer *renderer)
     DO_IF_ACTIVE_SCENE(activeScene->Render(renderer);)
 }
 
-void SceneManager::mousePressEvent(QMouseEvent *e)
+bool SceneManager::event(QEvent *e)
 {
-    DO_IF_ACTIVE_SCENE(activeScene->mousePressEvent(e);)
-}
+    if (e->type() == QEvent::MouseButtonPress)
+    {
+        DO_IF_ACTIVE_SCENE(activeScene->mousePressEvent(static_cast<QMouseEvent*>(e));)
+    }
+    else if (e->type() == QEvent::MouseButtonRelease)
+    {
+        DO_IF_ACTIVE_SCENE(activeScene->mouseReleaseEvent(static_cast<QMouseEvent*>(e));)
+    }
+    else if (e->type() == QEvent::Timer)
+    {
+        DO_IF_ACTIVE_SCENE(activeScene->timerEvent(static_cast<QTimerEvent*>(e));)
+    }
 
-void SceneManager::mouseReleaseEvent(QMouseEvent *e)
-{
-    DO_IF_ACTIVE_SCENE(activeScene->mouseReleaseEvent(e);)
-}
-
-void SceneManager::timerEvent(QTimerEvent *e)
-{
-    DO_IF_ACTIVE_SCENE(activeScene->timerEvent(e);)
+    return QObject::event(e);
 }
 
 void SceneManager::resize(int w, int h)

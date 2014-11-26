@@ -27,10 +27,7 @@ public:
     }
 
     void Render(Renderer *renderer);
-
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void timerEvent(QTimerEvent *e);
+    bool event(QEvent *);
     void resize(int w, int h);
 
 

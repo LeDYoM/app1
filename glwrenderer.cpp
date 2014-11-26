@@ -26,17 +26,9 @@ GLWRenderer::~GLWRenderer()
 
 bool GLWRenderer::event(QEvent *e)
 {
-    if (e->type() == QEvent::MouseButtonPress)
+    if (e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseButtonRelease || e->type() == QEvent::Timer)
     {
-        scnManager->mousePressEvent(static_cast<QMouseEvent*>(e));
-    }
-    else if (e->type() == QEvent::MouseButtonRelease)
-    {
-        scnManager->mouseReleaseEvent(static_cast<QMouseEvent*>(e));
-    }
-    else if (e->type() == QEvent::Timer)
-    {
-        scnManager->timerEvent(static_cast<QTimerEvent*>(e));
+        scnManager->event(e);
     }
 
     return QGLWidget::event(e);
