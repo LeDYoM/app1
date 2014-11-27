@@ -26,10 +26,7 @@ public:
         camera = temp;
         return temp;
     }
-
-    virtual void mousePressEvent(QMouseEvent *e);
-    virtual void mouseReleaseEvent(QMouseEvent *e);
-    virtual void timerEvent(QTimerEvent *e);
+    virtual bool event(QEvent *);
     virtual void resize(int w, int h);
     virtual void onCreate();
 };

@@ -20,6 +20,8 @@ void SceneManager::Render(Renderer *renderer)
 
 bool SceneManager::event(QEvent *e)
 {
+    DO_IF_ACTIVE_SCENE(activeScene->event(e);)
+/*
     if (e->type() == QEvent::MouseButtonPress)
     {
         DO_IF_ACTIVE_SCENE(activeScene->mousePressEvent(static_cast<QMouseEvent*>(e));)
@@ -32,7 +34,7 @@ bool SceneManager::event(QEvent *e)
     {
         DO_IF_ACTIVE_SCENE(activeScene->timerEvent(static_cast<QTimerEvent*>(e));)
     }
-
+*/
     return QObject::event(e);
 }
 

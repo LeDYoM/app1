@@ -16,6 +16,11 @@ void Scene::Render(Renderer *renderer)
     }
 }
 
+bool Scene::event(QEvent *e)
+{
+    return QObject::event(e);
+}
+/*
 void Scene::mousePressEvent(QMouseEvent *e)
 {
 }
@@ -28,6 +33,7 @@ void Scene::mouseReleaseEvent(QMouseEvent *e)
 void Scene::timerEvent(QTimerEvent *e)
 {
 }
+*/
 
 void Scene::resize(int w, int h)
 {
