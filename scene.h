@@ -12,7 +12,7 @@ class Renderer;
 class Scene : public QObject
 {
     Q_OBJECT
-    DEF_Q_PROPERTY_SEMI_EXTENDED(Camera*,camera,getCamera,setCamera)
+    DEF_PROPERTY(Camera*,camera,Camera)
 
 public:
     explicit Scene(SceneManager *scnManager_);

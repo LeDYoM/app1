@@ -45,7 +45,7 @@ void GLWRenderer::initializeGL()
 
     scene = scnManager->createScene<DemoScene1>();
     scene->onCreate();
-    scnManager->set_activeScene(scene);
+    scnManager->setActiveScene(scene);
 }
 
 void GLWRenderer::initTextures()

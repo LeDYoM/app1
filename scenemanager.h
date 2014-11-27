@@ -13,7 +13,7 @@ class SceneManager : public QObject, public ChildrenContainer<Scene>
 {
     Q_OBJECT
 
-    DEF_Q_PROPERTY_W_DEFAULT(Scene*,activeScene,0)
+    DEF_PROPERTY(Scene*,activeScene,ActiveScene)
 
 public:
     SceneManager(QObject *parent);

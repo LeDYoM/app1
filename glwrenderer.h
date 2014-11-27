@@ -15,8 +15,8 @@ class GLWRenderer : public QGLWidget
 {
     Q_OBJECT
 
-    DEF_Q_PROPERTY(Renderer*,renderer)
-    DEF_Q_PROPERTY(SceneManager*,scnManager)
+    DEF_PROPERTY(Renderer*,renderer,Renderer)
+    DEF_PROPERTY(SceneManager*,scnManager,SceneManager)
 
 public:
     explicit GLWRenderer(QGLFormat &format, QWidget *parent = 0);
