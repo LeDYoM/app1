@@ -1,11 +1,5 @@
 #include "glwrenderer.h"
 #include <QMouseEvent>
-#include <math.h>
-#include "meshobject.h"
-#include "shader.h"
-#include "vdata.h"
-#include "camera.h"
-#include "meshbuffer.h"
 #include "demoscene1.h"
 #include "scenemanager.h"
 #include <QGLContext>
