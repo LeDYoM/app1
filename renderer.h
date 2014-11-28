@@ -36,6 +36,7 @@ public:
     bool createBuffers(VertexCommunication *vc);
     QGLShaderProgram *newShaderProgram();
 private:
+    void setShaderMatrices(Shader *shader);
     void RenderShader(Shader *shader);
     Matrix4x4 projection;
     Matrix4x4 modelView;

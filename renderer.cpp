@@ -114,16 +114,20 @@ void Renderer::setModelView(const Matrix4x4 &modelView_)
     modelView = modelView_;
 }
 
+void Renderer::setShaderMatrices(Shader *shader)
+{
+    // Set modelview-projection matrix
+    shader->setMVMatrixPointer(modelView);
+    shader->setProjectionMatrixPointer(projection);
+}
+
 void Renderer::RenderShader(Shader *shader)
 {
     // Offset for position
 //    quintptr offset = 0;
 
     //shader->setActive();
-    // Set modelview-projection matrix
-    shader->setMVMatrixPointer(modelView);
-    shader->setProjectionMatrixPointer(projection);
-
+    setShaderMatrices(shader);
     // Use texture unit 0 which contains cube.png
     //program.setUniformValue("texture", 0);
 
