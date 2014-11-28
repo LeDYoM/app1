@@ -69,7 +69,24 @@ void Renderer::setSize(int w, int h)
 
 bool Renderer::createBuffers(VertexCommunication *vc)
 {
-    // Generate 2 VBOs
+    vc->vbo[0] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    vc->vbo[0]->create();
+    vc->vbo[0]->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    vc->vbo[0]->bind();
+    vc->vbo[0]->allocate(vc->positions.constData(), vc->positions.size() * sizeof(QVector3D));
+
+    vc->vbo[1] = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    vc->vbo[1]->create();
+    vc->vbo[1]->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    vc->vbo[1]->bind();
+    vc->vbo[1]->allocate(vc->indices.constData(), vc->indices.size() * sizeof(GLushort));
+
+    /*
+        QOpenGLBuffer vertexColorBuffer(QOpenGLBuffer::VertexBuffer);
+        vertexColorBuffer.create();
+        vertexColorBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
+        vertexColorBuffer.bind();
+        vertexColorBuffer.allocate(vertexColors, 9 * sizeof(float));
     glGenBuffers(2, vc->vbos);
 
     glBindBuffer(GL_ARRAY_BUFFER, vc->vbos[0]);
@@ -78,6 +95,7 @@ bool Renderer::createBuffers(VertexCommunication *vc)
     // Transfer index data to VBO 1
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vc->vbos[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, vc->indices.size() * sizeof(GLushort), vc->indices.constData(), GL_STATIC_DRAW);
+    */
     return true;
 }
 
@@ -96,8 +114,10 @@ void Renderer::Clear()
 
 void Renderer::Render(MeshBuffer *obj)
 {
-    glBindBuffer(GL_ARRAY_BUFFER, obj->getVC()->vbos[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj->getVC()->vbos[1]);
+    obj->getVC()->vbo[0]->bind();
+    obj->getVC()->vbo[1]->bind();
+//    glBindBuffer(GL_ARRAY_BUFFER, obj->getVC()->vbos[0]);
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj->getVC()->vbos[1]);
 
     RenderShader(activeShader);
 

@@ -5,6 +5,7 @@
 #include <QVector3D>
 #include <QColor>
 #include <QVector>
+#include <QOpenGLBuffer>
 
 struct VertexCommunication
 {
@@ -12,7 +13,7 @@ struct VertexCommunication
     QVector<unsigned short> indices;
     QVector<QColor> colors;
     QVector<QVector2D> textureCoordinates;
-    unsigned int vbos[4];
+    QOpenGLBuffer *vbo[4];
 };
 
 #endif // VDATA_H
