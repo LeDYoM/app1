@@ -69,17 +69,27 @@ void Renderer::setSize(int w, int h)
 
 bool Renderer::createBuffers(VertexCommunication *vc)
 {
-    vc->vbo[0] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    vc->vbo[0] = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
     vc->vbo[0]->create();
     vc->vbo[0]->setUsagePattern(QOpenGLBuffer::StaticDraw);
     vc->vbo[0]->bind();
-    vc->vbo[0]->allocate(vc->positions.constData(), vc->positions.size() * sizeof(QVector3D));
+    vc->vbo[0]->allocate(vc->indices.constData(), vc->indices.size() * sizeof(GLushort));
 
-    vc->vbo[1] = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    vc->vbo[1] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     vc->vbo[1]->create();
     vc->vbo[1]->setUsagePattern(QOpenGLBuffer::StaticDraw);
     vc->vbo[1]->bind();
-    vc->vbo[1]->allocate(vc->indices.constData(), vc->indices.size() * sizeof(GLushort));
+    const Simple3DVector *a = vc->positions.constData();
+    int b = vc->positions.size();
+    vc->vbo[1]->allocate(vc->positions.constData(), vc->positions.size() * sizeof(Simple3DVector));
+
+    vc->vbo[2] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    vc->vbo[2]->create();
+    vc->vbo[2]->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    vc->vbo[2]->bind();
+    DEBUG(sizeof(QColor));
+    DEBUG(sizeof(float));
+    vc->vbo[2]->allocate(vc->colors.constData(), vc->colors.size() * sizeof(SimpleRGBAColor));
 
     /*
         QOpenGLBuffer vertexColorBuffer(QOpenGLBuffer::VertexBuffer);
@@ -106,20 +116,14 @@ QGLShaderProgram *Renderer::newShaderProgram()
 
 void Renderer::Clear()
 {
-    rcontext->makeCurrent();
     // Clear color and depth buffer
-    glClearColor(1.0,.0,1.0,1.0);
+    glClearColor(0.0,0.0,0.0,1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::Render(MeshBuffer *obj)
 {
-    obj->getVC()->vbo[0]->bind();
-    obj->getVC()->vbo[1]->bind();
-//    glBindBuffer(GL_ARRAY_BUFFER, obj->getVC()->vbos[0]);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj->getVC()->vbos[1]);
-
-    RenderShader(activeShader);
+    RenderShader(obj,activeShader);
 
     glDrawElements(GL_TRIANGLES, obj->getVC()->indices.size(), GL_UNSIGNED_SHORT, 0);
 }
@@ -141,34 +145,14 @@ void Renderer::setShaderMatrices(Shader *shader)
     shader->setProjectionMatrixPointer(projection);
 }
 
-void Renderer::RenderShader(Shader *shader)
+void Renderer::RenderShader(MeshBuffer *obj, Shader *shader)
 {
-    // Offset for position
-//    quintptr offset = 0;
 
-    //shader->setActive();
+    shader->setActive();
     setShaderMatrices(shader);
-    // Use texture unit 0 which contains cube.png
-    //program.setUniformValue("texture", 0);
+    obj->getVC()->vbo[1]->bind();
+    shader->Program()->setAttributeArray(shader->vertexLocation(),0,3,sizeof(Simple3DVector));
 
-    // Tell OpenGL programmable pipeline how to locate vertex position data
-//    int vertexLocation = shader->Program()->attributeLocation("aVertexPosition");
-//    shader->Program()->enableAttributeArray(vertexLocation);
-    glVertexAttribPointer(shader->vertexLocation(), 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), 0);
-
-    // Offset for texture coordinate
-//    offset += sizeof(QVector3D);
-
-    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
-//    int texcoordLocation = shader->Program()->attributeLocation("a_texcoord");
-//    shader->Program()->enableAttributeArray(texcoordLocation);
-//    glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
-
-    // Offset for color
-//    offset = sizeof(QVector3D) + sizeof(QVector2D);
-
-    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
-//    int colorLocation = shader->Program()->attributeLocation("aVertexColor");
-//    shader->Program()->enableAttributeArray(colorLocation);
-//    glVertexAttribPointer(colorLocation, 3, GL_FLOAT, GL_FALSE, sizeof(unsigned short), 0);
+    obj->getVC()->vbo[2]->bind();
+    shader->Program()->setAttributeArray(shader->colorLocation(),0,4,sizeof(SimpleRGBAColor));
 }

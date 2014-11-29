@@ -1,6 +1,7 @@
 #include "meshbuffer.h"
 #include "log.h"
 #include "renderer.h"
+#include "vdata.h"
 
 MeshBuffer::MeshBuffer():isReady_(false)
 {
@@ -9,7 +10,7 @@ MeshBuffer::MeshBuffer():isReady_(false)
 MeshBuffer *MeshBuffer::createCubeGeometry(const QVector3D &size)
 {
 
-    QVector<QVector3D> _vertices = {
+    QVector<Simple3DVector> _vertices = {
         // Vertex data for Front face
         QVector3D(-0.5f, -0.5f,  0.5f)*size,
         QVector3D( 0.5f, -0.5f,  0.5f)*size,
@@ -58,7 +59,7 @@ MeshBuffer *MeshBuffer::createCubeGeometry(const QVector3D &size)
 
     MeshBuffer *meshb = new MeshBuffer();
     meshb->vc.indices = _indices;
-    meshb->vc.positions = _vertices;
+    meshb->addVertices(_vertices);
 
     meshb->bind();
 
@@ -71,6 +72,12 @@ bool MeshBuffer::bind()
     {
         DEBUG("Indices and vertices are required");
         return false;
+    }
+
+    if (vc.colors.size() < vc.positions.size())
+    {
+        DEBUG("Incresing color array with defaults");
+        addColors(SimpleRGBAColor(1.0f,1.0f,1.0f,1.0f),vc.positions.size() - vc.colors.size());
     }
 
     Renderer::Instance()->createBuffers(&vc);

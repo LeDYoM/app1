@@ -20,7 +20,10 @@ void SceneManager::Render(Renderer *renderer)
 
 bool SceneManager::event(QEvent *e)
 {
-    DO_IF_ACTIVE_SCENE(activeScene->event(e);)
+    if (e->type() != QEvent::ChildAdded && e->type() != QEvent::ChildRemoved)
+    {
+        DO_IF_ACTIVE_SCENE(activeScene->event(e);)
+    }
 
     return QObject::event(e);
 }

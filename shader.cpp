@@ -6,7 +6,23 @@ List<Shader*> Shader::shaders;
 
 bool Shader::InitShaders()
 {
-    shaders.push_back(fromSource(":/vshader",":/fshader"));
+//    shaders.push_back(fromSourceFile(":/vshader",":/fshader"));
+    shaders.push_back(fromSourceCode(
+                          "attribute vec3 aVertexPosition;"
+                          "attribute vec4 aVertexColor;"
+                          "uniform mat4 uMVMatrix;"
+                          "uniform mat4 uPMatrix;"
+                          "varying vec4 vColor;"
+                          "void main(void) {"
+                          "    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);"
+                          "    vColor = aVertexColor;"
+                          "}",
+
+                          "varying vec4 vColor;"
+                          "void main(void) {"
+                          "    gl_FragColor = vColor;"
+                          "}"
+                          ));
     return shaders.size() == 1;
 }
 
@@ -16,6 +32,9 @@ bool Shader::storeAttributeIndices()
     {
         vertexLocation_ = program->attributeLocation("aVertexPosition");
         program->enableAttributeArray(vertexLocation_);
+        colorLocation_ = program->attributeLocation("aVertexColor");
+        program->enableAttributeArray(colorLocation_);
+
         //glVertexAttribPointer(vertexLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), 0);
 
 
@@ -28,8 +47,6 @@ bool Shader::storeAttributeIndices()
 //    offset = sizeof(QVector3D) + sizeof(QVector2D);
 
     // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
-//    int colorLocation = shader->Program()->attributeLocation("aVertexColor");
-//    shader->Program()->enableAttributeArray(colorLocation);
 //    glVertexAttribPointer(colorLocation, 3, GL_FLOAT, GL_FALSE, sizeof(unsigned short), 0);
         return true;
     }
@@ -42,7 +59,22 @@ bool Shader::setActive()
     return program->bind();
 }
 
-Shader *Shader::fromSource(const String &vShaderFile, const String &fShaderFile)
+Shader *Shader::fromSourceCode(const String &vShader, const String &fShader)
+{
+    bool control = true;
+    Shader *tempShader = new Shader();
+    tempShader->program = Renderer::Instance()->newShaderProgram();
+
+    control &= tempShader->program->addShaderFromSourceCode(QGLShader::Vertex, vShader);
+    control &= tempShader->program->addShaderFromSourceCode(QGLShader::Fragment, fShader);
+    control &= tempShader->program->link();
+
+    control &= tempShader->storeAttributeIndices();
+
+    return control ? tempShader : 0;
+}
+
+Shader *Shader::fromSourceFile(const String &vShaderFile, const String &fShaderFile)
 {
     bool control = true;
     Shader *tempShader = new Shader();

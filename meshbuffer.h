@@ -15,28 +15,53 @@ public:
 
     static MeshBuffer *createCubeGeometry(const QVector3D &size);
 
-    int addVertex(const QVector3D &nv)
+    int addVertex(const Simple3DVector &nv)
     {
         vc.positions.push_back(nv);
         return vc.positions.size();
     }
 
-    int setVertices(const QVector<QVector3D> &nv)
+    int addVertices(const QVector<QVector3D> &nv)
     {
-        vc.positions = nv;
-        return vc.positions.size();
+        for (int i=0;i<nv.size()-1;++i)
+        {
+            addVertex(nv[i]);
+        }
+        return addVertex(nv[nv.size()-1]);
     }
 
-    int addColor(const QColor &nc)
+    int addVertices(const QVector<Simple3DVector> &nv)
+    {
+        for (int i=0;i<nv.size()-1;++i)
+        {
+            addVertex(nv[i]);
+        }
+        return addVertex(nv[nv.size()-1]);
+    }
+
+    int addColor(const SimpleRGBAColor &nc)
     {
         vc.colors.push_back(nc);
         return vc.colors.size();
     }
 
+    int addColors(const SimpleRGBAColor &nc,int numCopies)
+    {
+        for (int i=0;i<numCopies-1;++i)
+        {
+            addColor(nc);
+        }
+
+        return addColor(nc);
+    }
+
     int setColors(const QVector<QColor> &nc)
     {
-        vc.colors = nc;
-        return vc.colors.size();
+        for (int i=0;i<nc.size()-1;++i)
+        {
+            addColor(nc[i]);
+        }
+        return addColor(nc[nc.size()-1]);
     }
 
     int addtextureCoordinate(const QVector2D &ntc)

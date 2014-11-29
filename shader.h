@@ -19,14 +19,17 @@ public:
     bool setActive();
 
     inline int vertexLocation() const { return vertexLocation_; }
+    inline int colorLocation() const { return colorLocation_; }
+
 private:
     Shader();
 
     static QList<Shader*> shaders;
-    static Shader *fromSource(const String &vShaderFile,const String &fShaderFile);
-
+    static Shader *fromSourceFile(const String &,const String &);
+    static Shader *fromSourceCode(const String &,const String &);
     QGLShaderProgram *program;
     int vertexLocation_;
+    int colorLocation_;
 };
 
 #endif // SHADER_H
