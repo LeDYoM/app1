@@ -28,35 +28,24 @@ bool Shader::InitShaders()
 
 bool Shader::storeAttributeIndices()
 {
-    if (setActive())
+    if (program->bind())
     {
+/*
         vertexLocation_ = program->attributeLocation("aVertexPosition");
         program->enableAttributeArray(vertexLocation_);
         colorLocation_ = program->attributeLocation("aVertexColor");
         program->enableAttributeArray(colorLocation_);
-
-        //glVertexAttribPointer(vertexLocation_, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D), 0);
-
-
-    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
-//    int texcoordLocation = shader->Program()->attributeLocation("a_texcoord");
-//    shader->Program()->enableAttributeArray(texcoordLocation);
-//    glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
-
-    // Offset for color
-//    offset = sizeof(QVector3D) + sizeof(QVector2D);
-
-    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
-//    glVertexAttribPointer(colorLocation, 3, GL_FLOAT, GL_FALSE, sizeof(unsigned short), 0);
+*/
+/*
+        Program()->setAttributeArray("aVertexPosition",0,3,sizeof(Simple3DVector));
+        Program()->enableAttributeArray("aVertexPosition");
+        Program()->setAttributeArray("aVertexColor",0,4,sizeof(SimpleRGBAColor));
+        Program()->enableAttributeArray("aVertexColor");
+*/
         return true;
     }
     return false;
 
-}
-
-bool Shader::setActive()
-{
-    return program->bind();
 }
 
 Shader *Shader::fromSourceCode(const String &vShader, const String &fShader)

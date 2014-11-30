@@ -69,6 +69,13 @@ void Renderer::setSize(int w, int h)
 
 bool Renderer::createBuffers(VertexCommunication *vc)
 {
+    Shader *shader = Shader::defaultShader();
+
+    vc->vao = new QOpenGLVertexArrayObject();
+    vc->vao->create();
+    vc->vao->bind();
+
+    shader->Program()->bind();
     vc->vbo[0] = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
     vc->vbo[0]->create();
     vc->vbo[0]->setUsagePattern(QOpenGLBuffer::StaticDraw);
@@ -79,17 +86,22 @@ bool Renderer::createBuffers(VertexCommunication *vc)
     vc->vbo[1]->create();
     vc->vbo[1]->setUsagePattern(QOpenGLBuffer::StaticDraw);
     vc->vbo[1]->bind();
-    const Simple3DVector *a = vc->positions.constData();
-    int b = vc->positions.size();
     vc->vbo[1]->allocate(vc->positions.constData(), vc->positions.size() * sizeof(Simple3DVector));
+//    shader->Program()->setAttributeBuffer("aVertexPosition", GL_FLOAT, 0, 3, 0);
+    activeShader->Program()->setAttributeArray("aVertexPosition",0,3,sizeof(Simple3DVector));
 
     vc->vbo[2] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     vc->vbo[2]->create();
     vc->vbo[2]->setUsagePattern(QOpenGLBuffer::StaticDraw);
     vc->vbo[2]->bind();
-    DEBUG(sizeof(QColor));
-    DEBUG(sizeof(float));
     vc->vbo[2]->allocate(vc->colors.constData(), vc->colors.size() * sizeof(SimpleRGBAColor));
+
+    activeShader->Program()->setAttributeArray("aVertexColor",0,4,sizeof(SimpleRGBAColor));
+
+    activeShader->Program()->enableAttributeArray("aVertexPosition");
+    activeShader->Program()->enableAttributeArray("aVertexColor");
+
+//    shader->Program()->setAttributeBuffer("aVertexColor", GL_FLOAT, 0, 4, 0);
 
     /*
         QOpenGLBuffer vertexColorBuffer(QOpenGLBuffer::VertexBuffer);
@@ -106,6 +118,8 @@ bool Renderer::createBuffers(VertexCommunication *vc)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vc->vbos[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, vc->indices.size() * sizeof(GLushort), vc->indices.constData(), GL_STATIC_DRAW);
     */
+    vc->vao->release();
+    activeShader->Program()->release();
     return true;
 }
 
@@ -117,15 +131,18 @@ QGLShaderProgram *Renderer::newShaderProgram()
 void Renderer::Clear()
 {
     // Clear color and depth buffer
-    glClearColor(0.0,0.0,0.0,1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::Render(MeshBuffer *obj)
 {
-    RenderShader(obj,activeShader);
+    obj->getVC()->vao->bind();
+    activeShader->Program()->bind();
+
+    setShaderMatrices(activeShader);
 
     glDrawElements(GL_TRIANGLES, obj->getVC()->indices.size(), GL_UNSIGNED_SHORT, 0);
+    obj->getVC()->vao->release();
 }
 
 void Renderer::setProjection(const Matrix4x4 &projection_)
@@ -143,16 +160,4 @@ void Renderer::setShaderMatrices(Shader *shader)
     // Set modelview-projection matrix
     shader->setMVMatrixPointer(modelView);
     shader->setProjectionMatrixPointer(projection);
-}
-
-void Renderer::RenderShader(MeshBuffer *obj, Shader *shader)
-{
-
-    shader->setActive();
-    setShaderMatrices(shader);
-    obj->getVC()->vbo[1]->bind();
-    shader->Program()->setAttributeArray(shader->vertexLocation(),0,3,sizeof(Simple3DVector));
-
-    obj->getVC()->vbo[2]->bind();
-    shader->Program()->setAttributeArray(shader->colorLocation(),0,4,sizeof(SimpleRGBAColor));
 }

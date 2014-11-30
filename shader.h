@@ -16,7 +16,6 @@ public:
     inline GLShaderProgram *Program() { return program; }
 
     virtual bool storeAttributeIndices();
-    bool setActive();
 
     inline int vertexLocation() const { return vertexLocation_; }
     inline int colorLocation() const { return colorLocation_; }
