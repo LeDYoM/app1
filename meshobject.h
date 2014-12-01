@@ -6,6 +6,7 @@
 #include <QObject>
 
 class MeshBuffer;
+class RenderableVAO;
 
 class MeshObject : public SceneObject
 {
@@ -17,6 +18,7 @@ protected:
     void Render(Renderer *renderer);
 private:
     MeshBuffer *mBuffer;
+    RenderableVAO *vao;
 };
 
 #endif // MESHOBJECT_H

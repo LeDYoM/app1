@@ -7,6 +7,7 @@
 #include "vdata.h"
 
 class QOpenGLBuffer;
+class RenderableVAO;
 
 class MeshBuffer
 {
@@ -17,8 +18,8 @@ public:
 
     int addVertex(const Simple3DVector &nv)
     {
-        vc.positions.push_back(nv);
-        return vc.positions.size();
+        positions.push_back(nv);
+        return positions.size();
     }
 
     int addVertices(const QVector<QVector3D> &nv)
@@ -41,8 +42,8 @@ public:
 
     int addColor(const SimpleRGBAColor &nc)
     {
-        vc.colors.push_back(nc);
-        return vc.colors.size();
+        colors.push_back(nc);
+        return colors.size();
     }
 
     int addColors(const SimpleRGBAColor &nc,int numCopies)
@@ -66,34 +67,48 @@ public:
 
     int addtextureCoordinate(const QVector2D &ntc)
     {
-        vc.textureCoordinates.push_back(ntc);
-        return vc.textureCoordinates.size();
+        textureCoordinates.push_back(ntc);
+        return textureCoordinates.size();
     }
 
     int setTextureCoordinates(const QVector<QVector2D> &ntc)
     {
-        vc.textureCoordinates = ntc;
-        return vc.textureCoordinates.size();
+        textureCoordinates = ntc;
+        return textureCoordinates.size();
     }
 
     int addIndex(const unsigned short &ni)
     {
-        vc.indices.push_back(ni);
-        return vc.indices.size();
+        indices.push_back(ni);
+        return indices.size();
     }
 
     int setIndices(const QVector<unsigned short> &ni)
     {
-        vc.indices = ni;
-        return vc.indices.size();
+        indices = ni;
+        return indices.size();
     }
 
     inline bool isReady() const { return isReady_; }
     bool bind();
 
-    inline VertexCommunication *getVC() { return &vc; }
+    inline const Simple3DVector *Positions() const { return positions.constData(); }
+    inline const unsigned short *Indices() const { return indices.constData(); }
+    inline const SimpleRGBAColor *Colors() const { return colors.constData(); }
+    inline const QVector2D *TextureCoordinates() const { return textureCoordinates.constData(); }
+    inline int PositionsSize() const { return positions.size(); }
+    inline int IndicesSize() const { return indices.size(); }
+    inline int ColorsSize() const { return colors.size(); }
+    inline int textureCoordinatesSize() const { return textureCoordinates.size(); }
+
+    RenderableVAO *rvao;
+
 protected:
-    VertexCommunication vc;
+    QVector<Simple3DVector> positions;
+    QVector<unsigned short> indices;
+    QVector<SimpleRGBAColor> colors;
+    QVector<QVector2D> textureCoordinates;
+
 private:
     bool isReady_;
 };

@@ -4,6 +4,7 @@
 #include "vdata.h"
 #include "scenemanager.h"
 #include "log.h"
+#include "renderablevao.h"
 
 Renderer *Renderer::instance=0;
 
@@ -67,34 +68,35 @@ void Renderer::setSize(int w, int h)
     glViewport(0, 0, w, h);
 }
 
-bool Renderer::createBuffers(VertexCommunication *vc)
+bool Renderer::createBuffers(MeshBuffer *mb)
 {
     Shader *shader = Shader::defaultShader();
 
-    vc->vao = new QOpenGLVertexArrayObject();
-    vc->vao->create();
-    vc->vao->bind();
+    mb->rvao = new RenderableVAO();
+    mb->rvao->vao = new QOpenGLVertexArrayObject();
+    mb->rvao->vao->create();
+    mb->rvao->vao->bind();
 
     shader->Program()->bind();
-    vc->vbo[0] = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
-    vc->vbo[0]->create();
-    vc->vbo[0]->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    vc->vbo[0]->bind();
-    vc->vbo[0]->allocate(vc->indices.constData(), vc->indices.size() * sizeof(GLushort));
+    mb->rvao->vbo[0] = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    mb->rvao->vbo[0]->create();
+    mb->rvao->vbo[0]->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    mb->rvao->vbo[0]->bind();
+    mb->rvao->vbo[0]->allocate(mb->Indices(), mb->IndicesSize() * sizeof(GLushort));
 
-    vc->vbo[1] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    vc->vbo[1]->create();
-    vc->vbo[1]->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    vc->vbo[1]->bind();
-    vc->vbo[1]->allocate(vc->positions.constData(), vc->positions.size() * sizeof(Simple3DVector));
+    mb->rvao->vbo[1] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    mb->rvao->vbo[1]->create();
+    mb->rvao->vbo[1]->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    mb->rvao->vbo[1]->bind();
+    mb->rvao->vbo[1]->allocate(mb->Positions(), mb->PositionsSize() * sizeof(Simple3DVector));
 //    shader->Program()->setAttributeBuffer("aVertexPosition", GL_FLOAT, 0, 3, 0);
     activeShader->Program()->setAttributeArray("aVertexPosition",0,3,sizeof(Simple3DVector));
 
-    vc->vbo[2] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    vc->vbo[2]->create();
-    vc->vbo[2]->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    vc->vbo[2]->bind();
-    vc->vbo[2]->allocate(vc->colors.constData(), vc->colors.size() * sizeof(SimpleRGBAColor));
+    mb->rvao->vbo[2] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    mb->rvao->vbo[2]->create();
+    mb->rvao->vbo[2]->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    mb->rvao->vbo[2]->bind();
+    mb->rvao->vbo[2]->allocate(mb->Colors(), mb->ColorsSize() * sizeof(SimpleRGBAColor));
 
     activeShader->Program()->setAttributeArray("aVertexColor",0,4,sizeof(SimpleRGBAColor));
 
@@ -118,7 +120,7 @@ bool Renderer::createBuffers(VertexCommunication *vc)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vc->vbos[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, vc->indices.size() * sizeof(GLushort), vc->indices.constData(), GL_STATIC_DRAW);
     */
-    vc->vao->release();
+    mb->rvao->vao->release();
     activeShader->Program()->release();
     return true;
 }
@@ -136,13 +138,13 @@ void Renderer::Clear()
 
 void Renderer::Render(MeshBuffer *obj)
 {
-    obj->getVC()->vao->bind();
+    obj->rvao->vao->bind();
     activeShader->Program()->bind();
 
     setShaderMatrices(activeShader);
 
-    glDrawElements(GL_TRIANGLES, obj->getVC()->indices.size(), GL_UNSIGNED_SHORT, 0);
-    obj->getVC()->vao->release();
+    glDrawElements(GL_TRIANGLES, obj->IndicesSize(), GL_UNSIGNED_SHORT, 0);
+    obj->rvao->vao->release();
 }
 
 void Renderer::setProjection(const Matrix4x4 &projection_)

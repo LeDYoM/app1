@@ -5,8 +5,6 @@
 #include <QVector3D>
 #include <QColor>
 #include <QVector>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
 
 struct Simple3DVector
 {
@@ -51,16 +49,6 @@ struct SimpleRGBAColor
         b = b_;
         a = a_;
     }
-};
-
-struct VertexCommunication
-{
-    QVector<Simple3DVector> positions;
-    QVector<unsigned short> indices;
-    QVector<SimpleRGBAColor> colors;
-    QVector<QVector2D> textureCoordinates;
-    QOpenGLBuffer *vbo[4];
-    QOpenGLVertexArrayObject *vao;
 };
 
 #endif // VDATA_H

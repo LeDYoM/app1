@@ -9,7 +9,6 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     glwrenderer.cpp \
-    geometrycreator.cpp \
     sceneobject.cpp \
     camera.cpp \
     scene.cpp \
@@ -18,11 +17,11 @@ SOURCES += main.cpp\
     scenemanager.cpp \
     renderer.cpp \
     shader.cpp \
-    demoscene1.cpp
+    demoscene1.cpp \
+    renderablevao.cpp
 
 HEADERS  += mainwindow.h \
     glwrenderer.h \
-    geometrycreator.h \
     vdata.h \
     config.h \
     sceneobject.h \
@@ -36,7 +35,8 @@ HEADERS  += mainwindow.h \
     properties.h \
     childrencontainer.h \
     log.h \
-    demoscene1.h
+    demoscene1.h \
+    renderablevao.h
 
 RESOURCES = shaders.qrc
 

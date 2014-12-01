@@ -33,7 +33,7 @@ public:
     void prepareNewFrame();
     void setSize(int w, int h);
 
-    bool createBuffers(VertexCommunication *vc);
+    bool createBuffers(MeshBuffer *);
     QGLShaderProgram *newShaderProgram();
 private:
     void setShaderMatrices(Shader *shader);

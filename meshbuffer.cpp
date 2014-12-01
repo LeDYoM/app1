@@ -58,7 +58,7 @@ MeshBuffer *MeshBuffer::createCubeGeometry(const QVector3D &size)
     };
 
     MeshBuffer *meshb = new MeshBuffer();
-    meshb->vc.indices = _indices;
+    meshb->indices = _indices;
     meshb->addVertices(_vertices);
 
     meshb->bind();
@@ -68,18 +68,18 @@ MeshBuffer *MeshBuffer::createCubeGeometry(const QVector3D &size)
 
 bool MeshBuffer::bind()
 {
-    if (vc.indices.size() < 1 || vc.positions.size() < 1)
+    if (indices.size() < 1 || positions.size() < 1)
     {
         DEBUG("Indices and vertices are required");
         return false;
     }
 
-    if (vc.colors.size() < vc.positions.size())
+    if (colors.size() < positions.size())
     {
         DEBUG("Incresing color array with defaults");
-        addColors(SimpleRGBAColor(1.0f,1.0f,1.0f,1.0f),vc.positions.size() - vc.colors.size());
+        addColors(SimpleRGBAColor(1.0f,1.0f,1.0f,1.0f),positions.size() - colors.size());
     }
 
-    Renderer::Instance()->createBuffers(&vc);
+    Renderer::Instance()->createBuffers(this);
     return true;
 }
