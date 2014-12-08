@@ -89,7 +89,6 @@ bool Renderer::createBuffers(MeshBuffer *mb)
     mb->rvao->vbo[1]->setUsagePattern(QOpenGLBuffer::StaticDraw);
     mb->rvao->vbo[1]->bind();
     mb->rvao->vbo[1]->allocate(mb->Positions(), mb->PositionsSize() * sizeof(Simple3DVector));
-//    shader->Program()->setAttributeBuffer("aVertexPosition", GL_FLOAT, 0, 3, 0);
     activeShader->Program()->setAttributeArray("aVertexPosition",0,3,sizeof(Simple3DVector));
 
     mb->rvao->vbo[2] = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
